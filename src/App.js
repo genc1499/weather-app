@@ -2,12 +2,18 @@ import Form from './Components/Form.js';
 import './App.css';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
+import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 
 function App() {
 
   // State
   const [city,setCity]=useState('');
+  const [cityArray, setcityArray]=useState(['']);
   const [isMount, setIsMount]=useState(true);
+  const [currentIndex, setCurrentIndex]=useState(0);
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
+  const [weather, setCurrentWeather]=useState([]);
 
 
   useEffect(()=>{
@@ -25,7 +31,8 @@ function App() {
         }
       })
       .then((res)=>{
-        console.log(res);
+        console.log(res.data);
+        setcityArray(res.data);
       })
       .catch((error) => {
          console.error('Error:', error);
@@ -35,21 +42,27 @@ function App() {
 
 
 
-  // const [coordinates, setCoordinates]=useState([]);
+  // 
        {/* Make axios call to get LAT and LONG coords. */}
-      //  axios({  
-      //   url:`https://api.openweathermap.org/data/2.5/weather?`,
-      //   params:{
-      //       appid:`db10baac2dfd6e4c95277576b3941672`,
-      //       lat:,
-      //       long:
-      //   }
-      // }).then((res)=>{
-      //   console.log(res);
-      // })
-      // .catch((error) => {
-      //   console.error('Error:', error);
-      // });
+       useEffect(()=>{
+         if(!isMount)
+         {
+           console.log("start")
+            axios({  
+              url:`https://api.openweathermap.org/data/2.5/weather`,
+              params:{
+                  appid:`db10baac2dfd6e4c95277576b3941672`,
+                  lat:lat,
+                  lon:long
+              }
+            }).then((res)=>{
+              console.log(res.data);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }
+    },[long],[lat])
 
       // Make API call to search city and get LAT/LONG
 
@@ -62,11 +75,82 @@ function App() {
         setCity(city);
       }
 
+      const handleChange=(e)=>{
+        console.log(e);
+        console.log(e.target.options.selectedIndex)
+        setCurrentIndex(e.target.options.selectedIndex-1)
+      }
+
+      useEffect(()=>{
+        if(!isMount){
+          setLat(cityArray[currentIndex].latitude)
+          setLong(cityArray[currentIndex].longitude)
+        }
+      },[currentIndex])
 
   return (
     <>
  
       <Form getCity={getCitySearch}/>
+      <form>
+        <select onChange={handleChange}>
+          <option>Chose City</option>
+
+  
+            {
+              cityArray.map(item=>{
+        
+                  
+                return (
+                
+                <option>${item.name}, ${item.state}, ${item.country}</option>
+                )
+            
+            })
+         
+
+  
+             
+            }
+  
+           
+          
+        </select>
+      </form>
+
+      {
+        lat && long?
+          <>
+          <p>{lat}</p>
+          <p>{long}</p>
+          </>
+          :null
+      }
+        
+        
+    
+    
+    
+        {/* {
+        !isMount?
+        
+      
+        return (
+        <select>
+              {
+              cityArray.map(item =>{
+                return (
+                  <option>{`${item.name}, ${item.state}, ${item.country}`}</option>
+                )
+              })
+            }
+        
+        </select>:null
+
+          
+        
+      } */}
+   
     </>
   );
 }
