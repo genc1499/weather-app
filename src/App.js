@@ -14,6 +14,7 @@ function App() {
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
   const [weather, setCurrentWeather]=useState([]);
+  const [allCities,setAllCities] = useState({});
 
 
   useEffect(()=>{
@@ -57,6 +58,16 @@ function App() {
               }
             }).then((res)=>{
               console.log(res.data);
+              console.log('This weather', res.data.main.temp);
+              console.log('This weather', res.data.weather[0].main);
+
+              setAllCities({city:{temp:res.data.main.temp,desciption:res.data.weather[0].main}});
+
+             
+              console.log(allCities);
+
+
+              
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -126,30 +137,12 @@ function App() {
           </>
           :null
       }
-        
-        
-    
-    
-    
-        {/* {
-        !isMount?
-        
-      
-        return (
-        <select>
-              {
-              cityArray.map(item =>{
-                return (
-                  <option>{`${item.name}, ${item.state}, ${item.country}`}</option>
-                )
-              })
-            }
-        
-        </select>:null
 
-          
+      <div>
+
+      </div>
         
-      } */}
+        
    
     </>
   );
