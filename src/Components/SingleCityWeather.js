@@ -4,10 +4,22 @@ import { mySatelite } from "../App.js";
 
 const SingleCityWeather = () =>{
     const weatherDeets = useContext(mySatelite);
-    console.log(weatherDeets);
+  
+
     return(
         <>
-            <Link to='/'><button>Go back</button></Link>
+           
+
+            <div className='full-weather-card'>
+                <h4>Temperature:{Math.round(weatherDeets.main.temp-273.15)}°C</h4>
+                <h4>Feels Like:{Math.round(weatherDeets.main.feels_like-273.15)}°C</h4>
+                <h4>Humidity:{weatherDeets.main.humidity}%</h4>
+                <h4>High:{Math.round(weatherDeets.main.temp_max-273.15)}°C</h4>
+                <h4>Low:{Math.round(weatherDeets.main.temp_min-273.15)}°C</h4>
+                <Link to='/'><button>Back to all weather</button></Link>
+            </div>
+
+            
             
         </>
     )
