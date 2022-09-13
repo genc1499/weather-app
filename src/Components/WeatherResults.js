@@ -1,15 +1,20 @@
 import {useState} from 'react';
 import {Link, Route, Routes} from 'react-router-dom';
-import SingleCityWeather from './SingleCityWeather';
-import cloudy from '../assets/cloudy.jpg';
+import SingleCityWeather from './SingleCityWeather.js';
+import clouds from '../assets/Clouds.jpg';
 import rain from '../assets/rain.jpg';
-import thunder from '../assets/thunderstorm.jpg';
+import thunderstorm from '../assets/thunderstorm.jpg';
 import clear from '../assets/clear.jpg';
 import snow from '../assets/snow.jpg';
 import drizzle from '../assets/drizzle.jpg';
 import fog from '../assets/fog.jpg';
+import { useContext } from "react";
+import { mySatelite } from "../App.js";
+
 const WeatherResults = (props) =>{
-    const [convertTemp, setConvertTemp]=useState("")
+    
+    const weatherDeets = useContext(mySatelite);
+    console.log('this weather', weatherDeets);
 
 
     // let tempString = props.temp;
@@ -18,66 +23,76 @@ const WeatherResults = (props) =>{
 
     // console.log(tempString);
     // setConvertTemp(tempString);
- 
-   
-   
-  
+    console.log('this descirption', props.weatherDescription);
 
-    
     return (
         <>
-        <Routes>
+     
+     {/* <Routes>
             <Route path = {`/${props.selectedCity}`} element = {<SingleCityWeather/>}/>
-        </Routes>
+        </Routes> */}
+      
 
         <section>
             <main>
-                {
+           
+                
+                 
+
+             {
+                props.weatherDescription==="Clear"?
+                <Link to = '/weather'>
+                <div style={{ backgroundImage:`url(${clear})` }}className='weather-cards'>
+                <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
+                <h3>{Math.round(props.temp-273.15)}°C</h3>
+                </div>
+                </Link> :
+
                 props.weatherDescription==="Clouds"?
-                <Link to = {`/${props.selectedCity}`}>
-                <div style={{ backgroundImage:`url(${cloudy})` }}className='weather-cards'>
+                <Link to = '/weather'>
+                <div style={{ backgroundImage:`url(${clouds})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
                 <h3>{Math.round(props.temp-273.15)}°C</h3>
                  </div>
-                </Link>:
+                </Link> :
 
                 props.weatherDescription==="Rain"?
-                <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${rain})` }}className='weather-cards'>
+                <Link to = '/weather'><div style={{ backgroundImage:`url(${rain})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
                 <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                 </Link>:
 
                 props.weatherDescription==="Thunderstorm"?
-                <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${thunder})` }}className='weather-cards'>
+                <Link to = '/weather'><div style={{ backgroundImage:`url(${thunderstorm})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
                 <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                 </Link>:
                 
                 props.weatherDescription==="Clear"?
-                <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${clear})` }}className='weather-cards'>
+                <Link to = '/weather'><div style={{ backgroundImage:`url(${clear})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
-                <h3>°{Math.round(props.temp-273.15)} C</h3> </div>
+                <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                 </Link>:
                 
                  props.weatherDescription==="Snow"?
-                 <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${snow})` }}className='weather-cards'>
+                 <Link to = '/weather'><div style={{ backgroundImage:`url(${snow})` }}className='weather-cards'>
                  <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
-                 <h3>°{Math.round(props.temp-273.15)} C</h3> </div>
+                 <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                  </Link>:
 
                 props.weatherDescription==="Drizzle"?
-                <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${drizzle})` }}className='weather-cards'>
+                <Link to = '/weather'><div style={{ backgroundImage:`url(${drizzle})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
-                <h3>°{Math.round(props.temp-273.15)} C</h3> </div>
+                <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                 </Link>:
 
                 props.weatherDescription==="Fog"?
-                <Link to = {`/${props.selectedCity}`}><div style={{ backgroundImage:`url(${fog})` }}className='weather-cards'>
+                <Link to = '/weather'><div style={{ backgroundImage:`url(${fog})` }}className='weather-cards'>
                 <h2>{props.selectedCity[0].toUpperCase()+props.selectedCity.split("").slice(1).join("").toLowerCase()}</h2>
-                <h3>°{Math.round(props.temp-273.15)} C</h3> </div>
+                <h3>°{Math.round(props.temp-273.15)}°C</h3> </div>
                 </Link>:null
 
-                }
+                } 
             </main>
         </section>
         </>

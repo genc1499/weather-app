@@ -6,6 +6,7 @@ const Form = (props)=>{
     // state for city search
     const [citySearch,setCitySearch]=useState('');
 
+
     console.log(props.allCities);
 
     // get user's seach
@@ -22,9 +23,8 @@ const Form = (props)=>{
     const handleChangeCity=(e)=>{
         console.log(e);
         console.log(e.target.options.selectedIndex)
-
         props.getCurrentIndex(e.target.options.selectedIndex-1);
-       
+
       }
   
     return (
@@ -44,9 +44,11 @@ const Form = (props)=>{
                     
                     return(
                     item.state?
-                   <option key = {index}>{item.name}, {item.state}, {item.country}</option>:<option key = {index}>{item.name}, {item.country}
+                    <option key = {index}>{item.name}, {item.state}, {item.country}</option>:<option key = {index}>{item.name}, {item.country}
                     
-                    </option>)
+                    </option>
+                    
+                    )
                     
                 })
             }

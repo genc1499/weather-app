@@ -1,9 +1,15 @@
 import Form from './Components/Form.js';
 import './App.css';
-import {useState,useEffect} from 'react';
+import {useState,useEffect, createContext} from 'react';
 import axios from 'axios';
 import WeatherResults from './Components/WeatherResults.js';
+import SingleCityWeather from './Components/SingleCityWeather.js';
 import {Link, Routes, Route} from 'react-router-dom';
+
+const mySatelite = createContext();
+
+// export context so othr components can pick it up
+export {mySatelite};
 
 function App() {
 
@@ -16,6 +22,7 @@ function App() {
   const [long, setLong] = useState(0);
   const [weather, setCurrentWeather]=useState("");
   const [description,setDescription] = useState("");
+  const [allWeather,setAllWeather]=useState({});
 
 
 
@@ -62,7 +69,7 @@ function App() {
               console.log('This weather', res.data.main.temp);
               console.log('This weather', res.data.weather[0].main);
 
-        
+              setAllWeather(res.data);
              setCurrentWeather(res.data.main.temp)
              setDescription(res.data.weather[0].main)
               console.log('this weahter', res.data)
@@ -96,15 +103,23 @@ function App() {
 
   return (
     <>
+       <mySatelite.Provider value={allWeather}>
       <Routes>
       <Route path ='/' element = {<Form getCurrentIndex={getCityIndex} getCity={getCitySearch} allCities={cityArray}/>}/>
       </Routes>
       {
       weather?
       
-        <WeatherResults temp={weather} weatherDescription={description} selectedCity={displayCity}/>:null
+      <Routes>
+        <Route path='/' element = {<WeatherResults temp={weather} weatherDescription={description} selectedCity={displayCity}/>}/>
+
+        </Routes>:null
 
       }
+           <Routes>
+            <Route path = {`/weather`} element = {<SingleCityWeather/>}/>
+        </Routes>
+      </mySatelite.Provider>
 
     </>
   );
