@@ -42,7 +42,11 @@ const Form = (props)=>{
                 {
                 props.allCities.map((item,index)=>{
                     
-                    return(<option key = {index}>{item.name}, {item.state}, {item.country}</option>)
+                    return(
+                    item.state?
+                   <option key = {index}>{item.name}, {item.state}, {item.country}</option>:<option key = {index}>{item.name}, {item.country}
+                    
+                    </option>)
                     
                 })
             }
