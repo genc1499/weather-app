@@ -3,24 +3,26 @@ import './App.css';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import WeatherResults from './Components/WeatherResults.js';
+import {Link, Routes, Route} from 'react-router-dom';
 
 function App() {
 
   // State
   const [city,setCity]=useState('');
+  const [displayCity,setDisplay]=useState('');
   const [cityArray, setcityArray]=useState(['']);
   const [isMount, setIsMount]=useState(true);
-  const [currentIndex, setCurrentIndex]=useState(0);
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
   const [weather, setCurrentWeather]=useState("");
-  const [allCities,setAllCities] = useState({});
   const [description,setDescription] = useState("");
+
 
 
   useEffect(()=>{
     setIsMount(false);
   },[])
+
 
   useEffect(()=>{
     if(!isMount){
@@ -41,10 +43,6 @@ function App() {
       });
     }
   },[city])
-
-
-
-
 
   // 
        {/* Make axios call to get LAT and LONG coords. */}
@@ -67,7 +65,7 @@ function App() {
         
              setCurrentWeather(res.data.main.temp)
              setDescription(res.data.weather[0].main)
-              console.log(weather)
+              console.log('this weahter', res.data)
 
     
             })
@@ -83,32 +81,28 @@ function App() {
   
 
       const getCitySearch=(city)=>{
-       
         setCity(city);
       }
 
-      const handleChange=(e)=>{
-        console.log(e);
-        console.log(e.target.options.selectedIndex)
-        setCurrentIndex(e.target.options.selectedIndex-1)
-      }
 
-      useEffect(()=>{
+      const getCityIndex = (index) =>{
         if(!isMount){
-          setLat(cityArray[currentIndex].latitude)
-          setLong(cityArray[currentIndex].longitude)
+          setLat(cityArray[index].latitude)
+          setLong(cityArray[index].longitude)
+          setDisplay(city);
         }
-      },[currentIndex])
+      }
+    
 
   return (
     <>
- 
-      <Form getCity={getCitySearch} allCities={cityArray}/>
-
+      <Routes>
+      <Route path ='/' element = {<Form getCurrentIndex={getCityIndex} getCity={getCitySearch} allCities={cityArray}/>}/>
+      </Routes>
       {
-      lat && long?
+      weather?
       
-        <WeatherResults temp={weather} weatherDescription={description} selectedCity={city}/>:null
+        <WeatherResults temp={weather} weatherDescription={description} selectedCity={displayCity}/>:null
 
       }
 

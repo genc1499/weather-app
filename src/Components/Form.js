@@ -17,6 +17,15 @@ const Form = (props)=>{
         e.preventDefault();
         props.getCity(citySearch);
     }
+
+
+    const handleChangeCity=(e)=>{
+        console.log(e);
+        console.log(e.target.options.selectedIndex)
+
+        props.getCurrentIndex(e.target.options.selectedIndex-1);
+       
+      }
   
     return (
         <>
@@ -27,7 +36,7 @@ const Form = (props)=>{
             {
 
             props.allCities.length>1?
-            <select onChange={handleChange}>
+            <select onChange={handleChangeCity}>
             <option>Chose City</option>
 
                 {
