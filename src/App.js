@@ -2,7 +2,7 @@ import Form from './Components/Form.js';
 import './App.css';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
-import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+import WeatherResults from './Components/WeatherResults.js';
 
 function App() {
 
@@ -13,8 +13,9 @@ function App() {
   const [currentIndex, setCurrentIndex]=useState(0);
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
-  const [weather, setCurrentWeather]=useState([]);
+  const [weather, setCurrentWeather]=useState("");
   const [allCities,setAllCities] = useState({});
+  const [description,setDescription] = useState("");
 
 
   useEffect(()=>{
@@ -61,11 +62,9 @@ function App() {
               console.log('This weather', res.data.main.temp);
               console.log('This weather', res.data.weather[0].main);
 
-              setAllCities({city:{temp:res.data.main.temp,desciption:res.data.weather[0].main}});
-
-             
-              console.log(allCities);
-
+        
+             setCurrentWeather(res.data.main.temp)
+             setDescription(res.data.weather[0].main)
 
               
             })
@@ -102,48 +101,14 @@ function App() {
   return (
     <>
  
-      <Form getCity={getCitySearch}/>
-      <form>
-        <select onChange={handleChange}>
-          <option>Chose City</option>
-
-  
-            {
-              cityArray.map(item=>{
-        
-                  
-                return (
-                
-                <option>${item.name}, ${item.state}, ${item.country}</option>
-                )
-            
-            })
-         
-
-  
-             
-            }
-  
-           
-          
-        </select>
-      </form>
+      <Form getCity={getCitySearch} allCities={cityArray}/>
 
       {
-        lat && long?
-          <>
-          <p>{lat}</p>
-          <p>{long}</p>
-          </>
-          :null
+      lat && long?
+        <WeatherResults temp={weather} weatherDescription={description} selectedCity={city}/>:null
+
       }
 
-      <div>
-
-      </div>
-        
-        
-   
     </>
   );
 }
