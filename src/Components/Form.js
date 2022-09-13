@@ -15,8 +15,6 @@ const Form = (props)=>{
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(e);
-        
         props.getCity(citySearch);
     }
   
@@ -32,12 +30,10 @@ const Form = (props)=>{
             <select onChange={handleChange}>
             <option>Chose City</option>
 
-                
-              
                 {
                 props.allCities.map((item,index)=>{
                     
-                         return(<option key = {index}>{item.name}, {item.state}, {item.country}</option>)
+                    return(<option key = {index}>{item.name}, {item.state}, {item.country}</option>)
                     
                 })
             }

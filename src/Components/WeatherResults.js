@@ -1,4 +1,18 @@
+import {useState} from 'react';
 const WeatherResults = (props) =>{
+    const [convertTemp, setConvertTemp]=useState("")
+
+
+    // let tempString = props.temp;
+    // tempString-=273.15;
+    // tempString = tempString.toString();
+
+    // console.log(tempString);
+    // setConvertTemp(tempString);
+    
+   
+  
+
     
     return (
         <>
@@ -15,4 +29,4 @@ const WeatherResults = (props) =>{
 
 }
 
-export default WeatherResults
+export default WeatherResults;

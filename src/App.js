@@ -44,6 +44,8 @@ function App() {
 
 
 
+
+
   // 
        {/* Make axios call to get LAT and LONG coords. */}
        useEffect(()=>{
@@ -65,8 +67,9 @@ function App() {
         
              setCurrentWeather(res.data.main.temp)
              setDescription(res.data.weather[0].main)
+              console.log(weather)
 
-              
+    
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -75,7 +78,6 @@ function App() {
     },[long],[lat])
 
       // Make API call to search city and get LAT/LONG
-
 
 
   
@@ -105,6 +107,7 @@ function App() {
 
       {
       lat && long?
+      
         <WeatherResults temp={weather} weatherDescription={description} selectedCity={city}/>:null
 
       }
