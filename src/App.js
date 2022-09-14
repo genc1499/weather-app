@@ -8,7 +8,7 @@ import {Link, Routes, Route} from 'react-router-dom';
 
 const mySatelite = createContext();
 
-// export context so othr components can pick it up
+// export context so other components can pick it up
 export {mySatelite};
 
 function App() {
@@ -23,13 +23,13 @@ function App() {
   const [weather, setCurrentWeather]=useState("");
   const [description,setDescription] = useState("");
   const [allWeather,setAllWeather]=useState({});
+  const [allLatLong, setAllLatLong] = useState([]);
 
 
 
   useEffect(()=>{
     setIsMount(false);
   },[])
-
 
   useEffect(()=>{
     if(!isMount){
@@ -70,22 +70,15 @@ function App() {
               console.log('This weather', res.data.weather[0].main);
 
               setAllWeather(res.data);
-             setCurrentWeather(res.data.main.temp)
-             setDescription(res.data.weather[0].main)
-              console.log('this weahter', res.data)
-
-    
+              setCurrentWeather(res.data.main.temp)
+              setDescription(res.data.weather[0].main)
+              console.log('this weahter', res.data);
             })
             .catch((error) => {
               console.error('Error:', error);
             });
         }
     },[long],[lat])
-
-      // Make API call to search city and get LAT/LONG
-
-
-  
 
       const getCitySearch=(city)=>{
         setCity(city);
@@ -96,6 +89,13 @@ function App() {
         if(!isMount){
           setLat(cityArray[index].latitude)
           setLong(cityArray[index].longitude)
+          
+          localStorage.setItem(`${city}${lat}${long}`, [lat,long]);
+
+   
+
+     
+
           setDisplay(city);
         }
       }
@@ -103,24 +103,18 @@ function App() {
 
   return (
     <>
-       <mySatelite.Provider value={allWeather}>
-      <Routes>
-      <Route path ='/' element = {<Form getCurrentIndex={getCityIndex} getCity={getCitySearch} allCities={cityArray}/>}/>
-      </Routes>
-      {
-      weather?
-      
-      <Routes>
-        <Route path='/' element = {<WeatherResults temp={weather} weatherDescription={description} selectedCity={displayCity}/>}/>
-
-        </Routes>:null
-
-      }
-           <Routes>
-            <Route path = {`/weather`} element = {<SingleCityWeather/>}/>
+      <mySatelite.Provider value={allWeather}>
+        <Routes>
+          <Route path ='/' element = {<><Form getCurrentIndex={getCityIndex} getCity={getCitySearch} allCities={cityArray}/> 
+          {
+            weather? 
+              <WeatherResults temp={weather} weatherDescription={description} selectedCity={displayCity}/>:null
+          }
+          </>}/>
+        
+          <Route path = "/weather" element = {<SingleCityWeather/>}/>
         </Routes>
       </mySatelite.Provider>
-
     </>
   );
 }
