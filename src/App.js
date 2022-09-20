@@ -89,13 +89,6 @@ function App() {
         if(!isMount){
           setLat(cityArray[index].latitude)
           setLong(cityArray[index].longitude)
-          
-          localStorage.setItem(`${city}${lat}${long}`, [lat,long]);
-
-   
-
-     
-
           setDisplay(city);
         }
       }
